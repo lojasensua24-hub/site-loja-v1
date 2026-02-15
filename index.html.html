@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Foto Oliver | Cinematic Experience</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1. CORE SYSTEM --- */
+        :root {
+            --bg-body: #050505;
+            --bg-card: #0a0a0a;
+            --gold: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --text-white: #ffffff;
+            --text-gray: #a0a0a0;
+            --border-light: rgba(255, 255, 255, 0.08);
+            --transition: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-white);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        img { width: 100%; display: block; object-fit: cover; }
+
+        /* Utilitários de Animação (Scroll Reveal) */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s var(--transition); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- 2. HEADER --- */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; padding: 25px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000;
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-light);
+            transition: 0.3s;
+        }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
+        nav ul { display: flex; gap: 40px; list-style: none; }
+        nav a { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; position: relative; }
+        nav a::after { content:''; position: absolute; width: 0; height: 1px; bottom: -5px; left: 0; background: var(--gold); transition: 0.3s; }
+        nav a:hover { color: var(--gold); }
+        nav a:hover::after { width: 100%; }
+
+        /* --- 3. HERO BANNER (ATUALIZADO - FOTO DE FUNDO) --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Alinhado à esquerda */
+            overflow: hidden;
+            padding: 0 100px;
+        }
+
+        /* Fundo com a Imagem "Nano Banana Festa" */
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            /* SUBSTITUA 'banner-festa.jpg' PELO ARQUIVO REAL DA FOTO GERADA */
+            background: url('banner-festa.jpg') no-repeat center center/cover;
+            z-index: 0;
+            filter: brightness(0.4); /* Escurece para o texto aparecer */
+            animation: slowZoom 20s infinite alternate;
+        }
+
+        /* Spotlight Effect sobre o Banner */
+        .hero-overlay-spotlight {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), transparent 10%, rgba(0,0,0,0.8) 80%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-container {
+            position: relative; z-index: 2; max-width: 800px;
+        }
+
+        .hero-text { opacity: 0; animation: fadeUp 1s 0.2s forwards; }
+        
+        .hero-label {
+            display: inline-block; color: var(--gold); border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 8px 16px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px;
+            margin-bottom: 30px; border-radius: 100px;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);
+        }
+
+        .hero-text h1 {
+            font-size: 5rem; line-height: 1; margin-bottom: 25px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .hero-text p { font-size: 1.2rem; color: #ddd; margin-bottom: 40px; max-width: 600px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+
+        .btn-glow {
+            position: relative; padding: 18px 45px; background: rgba(0,0,0,0.4); 
+            border: 1px solid rgba(255,255,255,0.3); color: #fff;
+            text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; cursor: pointer;
+            overflow: hidden; transition: 0.4s; backdrop-filter: blur(5px);
+        }
+        .btn-glow:hover { border-color: var(--gold); color: var(--gold); background: rgba(0,0,0,0.8); box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+
+        /* --- 4. SEÇÃO DO EXPERT (REDESENHADA - SEM QUADRADOS AMARELOS) --- */
+        .expert-section { padding: 120px 0; background: #080808; position: relative; overflow: hidden; }
+        
+        .expert-container {
+            max-width: 1200px; margin: 0 auto; padding: 0 40px;
+            display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: center;
+        }
+
+        /* Novo Design da Imagem do Expert */
+        .expert-photo-wrapper {
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            transition: transform 0.5s var(--transition);
+        }
+
+        .expert-photo-wrapper:hover {
+            transform: scale(1.02); /* Zoom suave do container */
+        }
+
+        .expert-img-file { 
+            width: 100%; display: block; 
+            filter: grayscale(20%); 
+            transition: 0.5s; 
+        }
+        
+        /* Efeito Hover na Imagem */
+        .expert-photo-wrapper:hover .expert-img-file {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+
+        /* Detalhe elegante (Linha fina dourada apenas embaixo) */
+        .expert-photo-wrapper::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 4px;
+            background: var(--gold); transition: 0.5s;
+        }
+        .expert-photo-wrapper:hover::after { width: 100%; }
+
+        .expert-content h2 { font-size: 3.5rem; margin-bottom: 20px; color: #fff; line-height: 1.1; }
+        .expert-content span { color: var(--gold); text-transform: uppercase; letter-spacing: 3px; font-size: 0.9rem; display: block; margin-bottom: 20px; }
+        .expert-content p { color: #888; margin-bottom: 30px; font-size: 1.05rem; }
+
+        /* --- 5. PORTFOLIO GRID (6 CATEGORIAS) --- */
+        .niches-section { padding: 120px 40px; background: var(--bg-body); }
+        .section-header { text-align: center; margin-bottom: 80px; }
+        
+        .niches-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;
+            max-width: 1400px; margin: 0 auto;
+        }
+        
+        /* HOVER PRESERVADO (BRILHO) */
+        .niche-card {
+            height: 400px; position: relative; overflow: hidden; border: 1px solid var(--border-light);
+            cursor: pointer; transition: 0.4s;
+        }
+        .niche-card img { height: 100%; width: 100%; transition: 0.8s; filter: grayscale(100%) brightness(0.8); }
+        .niche-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px;
+            background: linear-gradient(to top, #000, transparent);
+        }
+        .niche-card:hover { border-color: var(--gold); }
+        .niche-card:hover img { transform: scale(1.1); filter: grayscale(0%) brightness(1.1); }
+
+        /* --- 6. DEPOIMENTOS EM VÍDEO (NOVA SESSÃO) --- */
+        .testimonials-section {
+            padding: 100px 0;
+            background: #0b0b0b;
+            border-top: 1px solid #111;
+            border-bottom: 1px solid #111;
+        }
+
+        .stories-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 40px 50px;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* Firefox */
+        }
+        .stories-container::-webkit-scrollbar { display: none; /* Chrome */ }
+
+        .video-card {
+            flex: 0 0 250px; /* Largura fixa estilo Stories */
+            height: 445px; /* Proporção 9:16 */
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            scroll-snap-align: center;
+            border: 2px solid transparent;
+            transition: 0.3s;
+            background: #000;
+        }
+
+        .video-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-10px);
+        }
+
+        .video-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .story-overlay {
+            position: absolute; top: 15px; left: 15px;
+            display: flex; align-items: center; gap: 10px;
+            z-index: 2;
+        }
+        .story-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; }
+        .story-user { font-size: 0.8rem; font-weight: 500; text-shadow: 0 2px 4px rgba(0,0,0,1); }
+
+        /* --- 7. FORMULÁRIO TRAVADO (INTOCÁVEL) --- */
+        .contact-section { background-color: #000000; padding: 100px 20px; display: flex; justify-content: center; border-top: 1px solid #111; }
+        .contact-container { max-width: 1100px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: flex-start; }
+        
+        .contact-info .sub-label { color: var(--gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: block; }
+        .contact-info h2 { font-size: 3rem; color: #fff; margin-bottom: 30px; line-height: 1.2; }
+        .contact-info p { color: #888; font-size: 0.95rem; margin-bottom: 40px; max-width: 400px; }
+        .contact-details div { display: flex; align-items: center; margin-bottom: 20px; color: #aaa; font-size: 0.9rem; }
+        .contact-details i { color: var(--gold); margin-right: 15px; font-size: 1.2rem; }
+        
+        .form-box { border: 1px solid #222; padding: 50px; background-color: #050505; }
+        .form-group { margin-bottom: 35px; }
+        .form-group label { display: block; font-size: 0.7rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        
+        .form-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; padding: 10px 0; font-family: 'Montserrat'; font-size: 1rem; transition: 0.3s; }
+        .form-input:focus { outline: none; border-bottom-color: var(--gold); }
+        select.form-input option { background-color: #111; }
+        
+        .btn-submit { width: 100%; padding: 18px; background: transparent; border: 1px solid var(--gold); color: var(--gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn-submit:hover { background: var(--gold); color: #000; }
+
+        /* --- WHATSAPP FLOAT --- */
+        .wa-float { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 100; transition: transform 0.3s; }
+        .wa-float:hover { transform: scale(1.1); }
+
+        /* --- MODAL --- */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; display: none; padding: 50px; overflow-y: auto; opacity: 0; transition: opacity 0.5s; }
+        .modal.active { display: block; opacity: 1; }
+        .modal-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .modal-content img { width: 100%; height: 300px; object-fit: cover; border-radius: 4px; opacity: 0; animation: fadeUp 0.6s forwards; }
+        .close-modal { position: absolute; top: 30px; right: 40px; font-size: 2rem; color: #fff; cursor: pointer; transition: 0.3s; }
+
+        /* Keyframes */
+        @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.1); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 900px) {
+            .hero { padding: 0 20px; justify-content: center; text-align: center; }
+            .expert-container, .contact-container { grid-template-columns: 1fr; }
+            nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">OLIVER STUDIO</div>
+        <nav>
+            <ul>
+                <li><a href="#experiencia">Expert</a></li>
+                <li><a href="#portfolio">Portfólio</a></li>
+                <li><a href="#depoimentos">Depoimentos</a></li>
+                <li><a href="#contato">Proposta</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="hero">
+        <div class="hero-bg"></div> <div class="hero-overlay-spotlight"></div>
+        
+        <div class="hero-container">
+            <div class="hero-text">
+                <span class="hero-label">Fine Art Photography</span>
+                <h1>A Arte de<br>Eternizar o Agora.</h1>
+                <p>Onde a técnica clássica encontra a inovação visual. Transformamos momentos em patrimônio histórico.</p>
+                <a href="#contato" class="btn-glow">Iniciar Projeto</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="experiencia" class="expert-section reveal">
+        <div class="expert-container">
+            <div class="expert-photo-wrapper">
+                <img src="image_c53a5a.png" alt="Oliver Expert" class="expert-img-file">
+            </div>
+            
+            <div class="expert-content">
+                <span>O Mestre por trás da lente</span>
+                <h2>Oliver Studio</h2>
+                <p>A fotografia não é apenas sobre o registro, é sobre a atmosfera. Com uma abordagem que funde o fotojornalismo com a estética editorial de moda, Oliver transformou a maneira de registrar eventos sociais. Seu olhar treinado captura frações de segundo que definem gerações.</p>
+                <a href="#portfolio" class="btn-glow" style="border-color: var(--border-light);">Ver Portfólio</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="niches-section">
+        <div class="section-header reveal">
+            <p>Nossa Expertise</p>
+            <h2>Acervo Selecionado</h2>
+        </div>
+        <div class="niches-grid">
+            <div class="niche-card reveal" onclick="openGallery('casamento')">
+                <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800" alt="Casamento">
+                <div class="niche-overlay"><h3>Casamentos</h3><span>Ver Coleção <i class="fas fa-arrow-right"></i></span></div>
+            </div>
+            <div class="niche-card reveal" onclick="openGallery('corporativo')">
+                <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800" alt="Corporativo">
+                <div class="niche-overlay"><h3>Corporativo</h3><span>Ver Coleção <i class="fas fa-arrow-right"></i></span></div>
+            </div>
+            <div class="niche-card reveal" onclick="openGallery('eventos')">
+                <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=800" alt="Eventos">
+                <div class="niche-overlay"><h3>Eventos Sociais</h3><span>Ver Coleção <i class="fas fa-arrow-right"></i></span></div>
+            </div>
+            <div class="niche-card reveal" onclick="openGallery('aniversario')">
+                <img src="https://images.unsplash.com/photo-1530103862676-de3c9a59aa38?w=800" alt="Aniversário">
+                <div class="niche-overlay"><h3>Aniversários</h3><span>Ver Coleção <i class="fas fa-arrow-right"></i></span></div>
+            </div>
+            <div class="niche-card reveal" onclick="openGallery('batizado')">
+                <img src="https://images.unsplash.com/photo-1519824145371-296894a0daa9?w=800" alt="Batizados">
+                <div class="niche-overlay"><h3>Batizados</h3><span>Ver Coleção <i class="fas fa-arrow-right"></i></span></div>
+            </div>
+            <div class="niche-card reveal" onclick="openGallery('ensaios')">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800" alt="Ensaios">
+                <div class="niche-overlay"><h3>Ensaios</h3><span>Ver Coleção <i class="fas fa-arrow-right"></i></span></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="depoimentos" class="testimonials-section reveal">
+        <div class="section-header">
+            <p>Love Notes</p>
+            <h2>O Que Dizem Nossos Clientes</h2>
+            <a href="https://www.instagram.com/stories/highlights/17919352316684215/" target="_blank" style="color: var(--gold); font-size: 0.8rem; margin-top: 10px; display: block;">Ver Destaques no Instagram <i class="fas fa-external-link-alt"></i></a>
+        </div>
+
+        <div class="stories-container">
+            <div class="video-card">
+                <div class="story-overlay">
+                    <img src="image_c53a5a.png" class="story-avatar">
+                    <span class="story-user">Noiva Ana</span>
+                </div>
+                <video src="video1.mp4" controls poster="https://images.unsplash.com/photo-1519741497674-611481863552?w=400"></video>
+            </div>
+            <div class="video-card">
+                <div class="story-overlay">
+                    <img src="image_c53a5a.png" class="story-avatar">
+                    <span class="story-user">Eventos SP</span>
+                </div>
+                <video src="video2.mp4" controls poster="https://images.unsplash.com/photo-1511578314322-379afb476865?w=400"></video>
+            </div>
+            <div class="video-card"><video src="video3.mp4" controls></video></div>
+            <div class="video-card"><video src="video4.mp4" controls></video></div>
+            <div class="video-card"><video src="video5.mp4" controls></video></div>
+            <div class="video-card"><video src="video6.mp4" controls></video></div>
+            <div class="video-card"><video src="video7.mp4" controls></video></div>
+            <div class="video-card"><video src="video8.mp4" controls></video></div>
+            <div class="video-card"><video src="video9.mp4" controls></video></div>
+        </div>
+    </section>
+
+    <section id="contato" class="contact-section">
+        <div class="contact-container reveal">
+            <div class="contact-info">
+                <span class="sub-label">Atendimento Exclusivo</span>
+                <h2>Solicite uma Proposta</h2>
+                <p>Para garantir a qualidade e exclusividade de cada evento, trabalhamos com agenda limitada. Preencha os dados ao lado para verificar disponibilidade.</p>
+                <div class="contact-details">
+                    <div><i class="fab fa-whatsapp"></i> (11) 95833-6050</div>
+                    <div><i class="fab fa-instagram"></i> @studiofotooliveroficial</div>
+                </div>
+            </div>
+
+            <div class="form-box">
+                <form>
+                    <div class="form-group">
+                        <label>Nome Completo</label>
+                        <input type="text" class="form-input" placeholder="Digite seu nome">
+                    </div>
+                    <div class="form-group">
+                        <label>WhatsApp</label>
+                        <input type="tel" class="form-input" placeholder="(11) 99999-9999">
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de Evento</label>
+                        <select class="form-input">
+                            <option selected disabled>Selecione...</option>
+                            <option>Casamento</option>
+                            <option>Corporativo</option>
+                            <option>Outros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Data Prevista</label>
+                        <input type="date" class="form-input">
+                    </div>
+                    <button type="submit" class="btn-submit">Verificar Disponibilidade</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="socials">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <p>© 2024 Studio Foto Oliver. Todos os direitos reservados.</p>
+    </footer>
+
+    <a href="https://wa.me/5511958336050" target="_blank" class="wa-float"><i class="fab fa-whatsapp"></i></a>
+
+    <div id="galleryModal" class="modal">
+        <div class="close-modal" onclick="closeModal()">&times;</div>
+        <div class="modal-content" id="modalGrid"></div>
+    </div>
+
+    <script>
+        // Spotlight no Banner
+        const hero = document.getElementById('hero');
+        const overlay = document.querySelector('.hero-overlay-spotlight');
+        hero.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth * 100;
+            const y = e.clientY / window.innerHeight * 100;
+            overlay.style.setProperty('--x', x + '%');
+            overlay.style.setProperty('--y', y + '%');
+        });
+
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Galeria 9 Fotos
+        const galleries = {
+            casamento: ['https://images.unsplash.com/photo-1519741497674-611481863552?w=600', 'https://images.unsplash.com/photo-1511285560982-1351cdeb9821?w=600', 'https://images.unsplash.com/photo-1606800052052-a08af7148866?w=600'],
+            corporativo: ['https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600', 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600', 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600'],
+            eventos: ['https://images.unsplash.com/photo-1533174072545-e8d4aa97edf9?w=600', 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600', 'https://images.unsplash.com/photo-1516997121675-4c2d1684aa3e?w=600'],
+            aniversario: ['https://images.unsplash.com/photo-1530103862676-de3c9a59aa38?w=600', 'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?w=600', 'https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=600'],
+            batizado: ['https://images.unsplash.com/photo-1519824145371-296894a0daa9?w=600', 'https://images.unsplash.com/photo-1627931327122-c43916962f3a?w=600', 'https://images.unsplash.com/photo-1544126566-47a3243a0f7e?w=600'],
+            ensaios: ['https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600', 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600', 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600']
+        };
+
+        const modal = document.getElementById('galleryModal');
+        const modalGrid = document.getElementById('modalGrid');
+
+        function openGallery(type) {
+            modalGrid.innerHTML = '';
+            // Repetir 3x para dar 9 fotos (3 originais * 3)
+            const imgs = [...galleries[type], ...galleries[type], ...galleries[type]]; 
+            imgs.forEach((src, i) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.style.animationDelay = (i * 0.1) + 's';
+                modalGrid.appendChild(img);
+            });
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal) closeModal();
+        });
+    </script>
+</body>
+</html>
